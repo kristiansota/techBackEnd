@@ -2,15 +2,19 @@ package com.kristian.test.model;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.kristian.test.annotations.UniqueEmail;
+import com.kristian.test.annotations.UniqueUsername;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.util.Date;
 import java.util.Set;
 
 @Entity
-@Table(uniqueConstraints = @UniqueConstraint(columnNames = {"username", "email"}), name = "users")
+@Table(uniqueConstraints = @UniqueConstraint(columnNames = "email"), name = "users")
 @EntityListeners(AuditingEntityListener.class)
 public class User {
 
@@ -30,7 +34,8 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long userId;
 
-    @Column(nullable = false, name = "username")
+    @Column(nullable = false, name = "username", unique = true)
+    @UniqueUsername
     @NotEmpty
     private String username;
 
@@ -38,8 +43,11 @@ public class User {
     @NotEmpty
     private String password;
 
-    @Column(nullable = false, name = "email")
+    @Column(unique = true, nullable = false, name = "email")
     @NotEmpty
+    @NotNull
+    @Email
+    @UniqueEmail(message = "Email is already registered")
     private String email;
 
     @Column(nullable = false, name = "name")
