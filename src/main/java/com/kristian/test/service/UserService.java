@@ -1,5 +1,6 @@
 package com.kristian.test.service;
 
+import com.kristian.test.exception.AppException;
 import com.kristian.test.model.Roles;
 import com.kristian.test.model.User;
 import com.kristian.test.repository.RoleRepository;
@@ -31,6 +32,14 @@ public class UserService {
     public User signUp(UserDTO userDTO){
 
         User user = new User();
+
+        if(userRepository.findByUsername(userDTO.getUsername()) != null) {
+            throw new AppException("This Username has been taken");
+        }
+
+        if (userRepository.findByEmail(userDTO.getEmail()) != null) {
+            throw new AppException("This email has already been registered");
+        }
 
         user.setUsername(userDTO.getUsername());
         user.setPassword(userDTO.getPassword());
@@ -83,7 +92,7 @@ public class UserService {
         user.setAge(userDTO.getAge());
         user.setGender(userDTO.getGender());
 
-        if (userDTO.getRole().equals("ROLE_USER")){
+        if (userDTO.getRole().equals("ROLE_USER")) {
             user.setRoles(new HashSet<>(Arrays.asList(roleRepository.getOne(1L))));
         } else {
             user.setRoles(new HashSet<>(Arrays.asList(roleRepository.getOne(2L))));

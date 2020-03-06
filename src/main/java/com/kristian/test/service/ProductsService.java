@@ -122,4 +122,11 @@ public class ProductsService {
             return false;
         }
     }
+
+    @Transactional
+    public void buyItemsInCart() {
+        long id = this.myUserDetailsService.getCurrentUser().getUserId();
+
+        cartItemsRepository.buyCartItems(id);
+    }
 }

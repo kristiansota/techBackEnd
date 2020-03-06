@@ -77,4 +77,9 @@ public class ProductController {
         return productsService.getCurrentUserItems().size();
     }
 
+    @RequestMapping(value = "/cart/buyItems", method = RequestMethod.DELETE)
+    public void buyItems() {
+        productsService.buyItemsInCart();
+    }
+
 }

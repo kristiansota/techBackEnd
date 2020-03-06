@@ -1,6 +1,7 @@
 package com.kristian.test.controller;
 
 
+import com.kristian.test.exception.AppException;
 import com.kristian.test.model.AuthenticationRequest;
 import com.kristian.test.model.AuthenticationResponse;
 import com.kristian.test.model.User;
@@ -76,7 +77,8 @@ public class UserController {
                             authenticationRequest.getPassword())
             );
         } catch (BadCredentialsException e) {
-            throw new Exception("Incorrect username or password", e);
+
+            throw new AppException("Incorrect username or password");
          }
         final UserDetails userDetails = userDetailsService.
                 loadUserByUsername(authenticationRequest.getUsername());

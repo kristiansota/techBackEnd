@@ -17,5 +17,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
     @Query(value = "SELECT * FROM users WHERE to_date IS NULL", nativeQuery = true)
     List<User> findAll();
 
-    public Optional<User> findByEmail(String email);
+    @Query(value = "SELECT * FROM users  WHERE email = :email AND to_date is NULL",
+            nativeQuery = true)
+    User findByEmail(String email);
 }
